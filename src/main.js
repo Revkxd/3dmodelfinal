@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { STLLoader } from "three/examples/jsm/loaders/STLLoader";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 const scene = new THREE.Scene();
@@ -15,18 +16,75 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 const controls = new OrbitControls(camera, renderer.domElement);
 
-const geometry = new THREE.BoxGeometry(1, 1, 1);
-const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-const cube = new THREE.Mesh(geometry, material);
-scene.add(cube);
+var ambientLight = new THREE.AmbientLight(0x404040);
+scene.add(ambientLight);
 
-camera.position.z = 5;
+var directionalLight = new THREE.DirectionalLight(0xffffff);
+directionalLight.position.set(1, 1, 1).normalize();
+scene.add(directionalLight);
+
+camera.position.x = -5;
+camera.position.y = 10;
+camera.position.z = 10;
+
+const loader = new STLLoader();
+
+loader.load(
+  "bowling-ball.stl",
+  (geometry) => {
+    const material = new THREE.MeshPhongMaterial({
+      color: 0x000000,
+      specular: 0x111111,
+      shininess: 200,
+    });
+    const mesh = new THREE.Mesh(geometry, material);
+    const scale = 0.0009;
+    mesh.scale.set(scale, scale, scale);
+    mesh.translateOnAxis(new THREE.Vector3(0, 1, 0), 2);
+    scene.add(mesh);
+  },
+  undefined,
+  (err) => console.error(err)
+);
+
+loader.load(
+  "bowling-pin.stl",
+  (geometry) => {
+    const material = new THREE.MeshPhongMaterial({
+      color: 0xffffff,
+      specular: 0x111111,
+      shininess: 200,
+    });
+    const mesh = new THREE.Mesh(geometry, material);
+    const scale = 0.0033;
+    mesh.scale.set(scale, scale, scale);
+    mesh.translateOnAxis(new THREE.Vector3(0, 1, 1), 2);
+    scene.add(mesh);
+  },
+  undefined,
+  (err) => console.error(err)
+);
+
+loader.load(
+  "bowling-lane.stl",
+  (geometry) => {
+    const material = new THREE.MeshPhongMaterial({
+      color: 0xcd7f32,
+      specular: 0x111111,
+      shininess: 200,
+    });
+    const mesh = new THREE.Mesh(geometry, material);
+    const scale = 0.001;
+    mesh.scale.set(scale, scale, scale + 0.001);
+    scene.add(mesh);
+  },
+  undefined,
+  (err) => console.error(err)
+);
 
 function animate() {
   requestAnimationFrame(animate);
 
-  cube.rotation.x += 0.01;
-  cube.rotation.y += 0.01;
   controls.update();
 
   renderer.render(scene, camera);

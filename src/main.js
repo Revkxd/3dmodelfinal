@@ -87,6 +87,13 @@ loader.load(
     const mesh = new THREE.Mesh(geometry, material);
     const scale = 0.001;
     mesh.scale.set(scale, scale, scale + 0.001);
+
+    // Rotate the lane mesh
+    mesh.rotation.y = Math.PI / 2; // Rotate 90 degrees clockwise around the y-axis
+
+    // Adjust the position of the lane along the y-axis
+    mesh.position.y = 0.5; // Example height
+
     scene.add(mesh);
   },
   undefined,

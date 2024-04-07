@@ -67,7 +67,7 @@ class MainScene {
     new BowlingBall(0, 0, 0, (object) => {
       this.addObject(object);
       object.setPos(0, 5, 0);
-      const impulseVec = new Ammo.btVector3(100, 1, 0);
+      const impulseVec = new Ammo.btVector3(110, 1, 0);
       const centerOfMass = new Ammo.btVector3();
       object.body.getCenterOfMassTransform().getOrigin(centerOfMass);
       object.body.applyImpulse(impulseVec, centerOfMass);

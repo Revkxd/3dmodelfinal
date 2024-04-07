@@ -40,7 +40,7 @@ class BowlingBall {
         transform.setOrigin(new Ammo.btVector3(x, y, z));
         const motionState = new Ammo.btDefaultMotionState(transform);
         const inertia = new Ammo.btVector3(0, 0, 0);
-        shape.calculateLocalInertia(100, inertia); // Mass
+        shape.calculateLocalInertia(300, inertia); // Mass
         const rbInfo = new Ammo.btRigidBodyConstructionInfo(
           1,
           motionState,

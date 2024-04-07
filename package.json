@@ -3,6 +3,9 @@
     "ammo.js": "^0.0.10",
     "three": "^0.163.0"
   },
+  "scripts": {
+    "start": "npx vite"
+  },
   "devDependencies": {
     "vite": "^5.2.8"
   }

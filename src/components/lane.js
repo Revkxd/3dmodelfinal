@@ -7,21 +7,16 @@ class BowlingLane {
     this.mesh = null;
     this.body = null;
 
-    // create rigid body
-    const shape = new Ammo.btSphereShape(0.5); // Adjust radius as needed
+    // create static body
+    const shape = new Ammo.btBoxShape(new Ammo.btVector3(10, 0.5, 100)); // Adjust size as needed
     const transform = new Ammo.btTransform();
     transform.setIdentity();
     transform.setOrigin(new Ammo.btVector3(x, y, z));
     const motionState = new Ammo.btDefaultMotionState(transform);
-    const inertia = new Ammo.btVector3(0, 0, 0);
-    shape.calculateLocalInertia(1, inertia); // Mass = 1
-    const rbInfo = new Ammo.btRigidBodyConstructionInfo(
-      1,
-      motionState,
-      shape,
-      inertia
-    );
+    const rbInfo = new Ammo.btRigidBodyConstructionInfo(0, motionState, shape);
     const body = new Ammo.btRigidBody(rbInfo);
+    body.setCollisionFlags(body.getCollisionFlags() | 2); // Set as static object
+    this.body = body;
 
     // load mesh
     const loader = new STLLoader();
@@ -29,7 +24,7 @@ class BowlingLane {
       "bowling-lane.stl",
       (geometry) => {
         const material = new THREE.MeshPhongMaterial({
-          color: 0xcd7f32,
+          color: 0xced2d7,
           specular: 0x111111,
           shininess: -100,
         });

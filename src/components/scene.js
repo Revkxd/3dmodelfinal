@@ -33,9 +33,9 @@ class MainScene {
     this.initThree();
     this.initPhysics();
 
-    this.camera.position.x = -50;
-    this.camera.position.y = 45;
-    this.camera.position.z = 0;
+    this.camera.position.set(-35, 45, 0);
+    const direction = new THREE.Vector3(100, 0, 0);
+    this.camera.lookAt(direction);
 
     new BowlingLane(0, 0, 0, (object) => {
       this.addObject(object);
@@ -65,7 +65,7 @@ class MainScene {
 
     new BowlingBall(0, 0, 0, (object) => {
       this.addObject(object);
-      object.setPos(0, 10, 0);
+      object.setPos(0, 5, 0);
       const impulseVec = new Ammo.btVector3(100, 1, 0);
       const centerOfMass = new Ammo.btVector3();
       object.body.getCenterOfMassTransform().getOrigin(centerOfMass);
@@ -129,7 +129,7 @@ class MainScene {
 
     this.stats.update();
 
-    this.orbitControls.update();
+    // this.orbitControls.update();
 
     this.renderer.render(this.scene, this.camera);
   }

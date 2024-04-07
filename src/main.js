@@ -91,8 +91,9 @@ loader.load(
     // Rotate the lane mesh
     mesh.rotation.y = Math.PI / 2; // Rotate 90 degrees clockwise around the y-axis
 
-    // Adjust the position of the lane along the y-axis
-    mesh.position.y = 0.5; // Example height
+    mesh.position.x = -4.5;
+    mesh.position.y = -0.48;
+    mesh.position.z = 19.5;
 
     scene.add(mesh);
   },

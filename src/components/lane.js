@@ -47,7 +47,6 @@ class BowlingLane {
           shape
         );
         const body = new Ammo.btRigidBody(rbInfo);
-        body.setCollisionFlags(body.getCollisionFlags() | 2); // Set as static object
         body.setRestitution(0.55);
         body.setFriction(0.3);
         body.setRollingFriction(1.0);

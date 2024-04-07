@@ -33,14 +33,14 @@ class BowlingBall {
         this.bounds = size;
 
         // create rigid body
-        const radius = size.x / 2;
+        const radius = size.x / 1.5;
         const shape = new Ammo.btSphereShape(radius); // Adjust radius as needed
         const transform = new Ammo.btTransform();
         transform.setIdentity();
         transform.setOrigin(new Ammo.btVector3(x, y, z));
         const motionState = new Ammo.btDefaultMotionState(transform);
         const inertia = new Ammo.btVector3(0, 0, 0);
-        shape.calculateLocalInertia(10, inertia); // Mass = 1
+        shape.calculateLocalInertia(100, inertia); // Mass
         const rbInfo = new Ammo.btRigidBodyConstructionInfo(
           1,
           motionState,
@@ -63,6 +63,7 @@ class BowlingBall {
   }
 
   setPos(x, y, z) {
+    this.mesh.position.set(x, y, z);
     const newPos = new Ammo.btVector3(x, y, z);
     const newTransform = new Ammo.btTransform();
     newTransform.setIdentity();

@@ -6,22 +6,7 @@ class BowlingBall {
   constructor(x, y, z, callback) {
     this.mesh = null;
     this.body = null;
-
-    // create rigid body
-    const shape = new Ammo.btSphereShape(0.5); // Adjust radius as needed
-    const transform = new Ammo.btTransform();
-    transform.setIdentity();
-    transform.setOrigin(new Ammo.btVector3(x, y, z));
-    const motionState = new Ammo.btDefaultMotionState(transform);
-    const inertia = new Ammo.btVector3(0, 0, 0);
-    shape.calculateLocalInertia(1, inertia); // Mass = 1
-    const rbInfo = new Ammo.btRigidBodyConstructionInfo(
-      1,
-      motionState,
-      shape,
-      inertia
-    );
-    const body = new Ammo.btRigidBody(rbInfo);
+    this.bounds = null;
 
     // load mesh
     const loader = new STLLoader();
@@ -40,7 +25,34 @@ class BowlingBall {
         mesh.position.z = z;
         mesh.scale.set(scale, scale, scale);
         this.mesh = mesh;
+
+        // get bounds
+        const boundingBox = new THREE.Box3().setFromObject(mesh);
+        const size = new THREE.Vector3();
+        boundingBox.getSize(size);
+        this.bounds = size;
+
+        // create rigid body
+        const radius = size.x / 2;
+        const shape = new Ammo.btSphereShape(radius); // Adjust radius as needed
+        const transform = new Ammo.btTransform();
+        transform.setIdentity();
+        transform.setOrigin(new Ammo.btVector3(x, y, z));
+        const motionState = new Ammo.btDefaultMotionState(transform);
+        const inertia = new Ammo.btVector3(0, 0, 0);
+        shape.calculateLocalInertia(10, inertia); // Mass = 1
+        const rbInfo = new Ammo.btRigidBodyConstructionInfo(
+          1,
+          motionState,
+          shape,
+          inertia
+        );
+        const body = new Ammo.btRigidBody(rbInfo);
+        body.setRestitution(0.75);
+        body.setFriction(0.3);
+        body.setRollingFriction(0.01);
         this.body = body;
+
         if (callback) {
           callback(this);
         }
@@ -48,6 +60,14 @@ class BowlingBall {
       undefined,
       (err) => console.error(err)
     );
+  }
+
+  setPos(x, y, z) {
+    const newPos = new Ammo.btVector3(x, y, z);
+    const newTransform = new Ammo.btTransform();
+    newTransform.setIdentity();
+    newTransform.setOrigin(newPos);
+    this.body.setCenterOfMassTransform(newTransform);
   }
 }
 

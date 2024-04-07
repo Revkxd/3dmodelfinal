@@ -7,7 +7,7 @@ import { BowlingPins } from "./pin";
 import { BowlingLane } from "./lane";
 
 class MainScene {
-  constructor(debug = false) {
+  constructor() {
     // threejs
     this.clock = new THREE.Clock();
     this.scene = new THREE.Scene();
@@ -33,8 +33,13 @@ class MainScene {
     this.initThree();
     this.initPhysics();
 
-    new BowlingBall(0, 50, 0, (object) => {
+    this.camera.position.x = -50;
+    this.camera.position.y = 45;
+    this.camera.position.z = 0;
+
+    new BowlingLane(0, 0, 0, (object) => {
       this.addObject(object);
+      object.setPos(0, 0, -object.bounds.z / 2);
     });
 
     // Create 10 instances of the bowling pin in a triangle formation
@@ -42,7 +47,7 @@ class MainScene {
     const pinSpacingX = 6; // Spacing between pins along the X-axis
     const pinSpacingZ = 5; // Spacing between rows along the Z-axis
     const startX =
-      0 * pinSpacingX * (numPinsInRow[numPinsInRow.length - 1] - 1); // Starting X position
+      10 * pinSpacingX * (numPinsInRow[numPinsInRow.length - 1] - 1); // Starting X position
     const startZ = 0; // Starting Z position
     const yVal = 5; // Y position of the pins
 
@@ -58,9 +63,13 @@ class MainScene {
       }
     }
 
-    new BowlingLane(0, -0.48, 0, (object) => {
-      object.mesh.rotation.z = Math.PI / 2;
+    new BowlingBall(0, 0, 0, (object) => {
       this.addObject(object);
+      object.setPos(0, 5, 0);
+      const impulseVec = new Ammo.btVector3(50, 1, 0);
+      const centerOfMass = new Ammo.btVector3();
+      object.body.getCenterOfMassTransform().getOrigin(centerOfMass);
+      object.body.applyImpulse(impulseVec, centerOfMass);
     });
   }
 
@@ -77,10 +86,6 @@ class MainScene {
     const directionalLight = new THREE.DirectionalLight(0xffffff);
     directionalLight.position.set(1, 1, 1).normalize();
     this.scene.add(directionalLight);
-
-    this.camera.position.x = 7;
-    this.camera.position.y = 45;
-    this.camera.position.z = 60;
   }
 
   initPhysics() {

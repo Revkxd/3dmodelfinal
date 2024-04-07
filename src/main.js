@@ -50,16 +50,27 @@ loader.load(
 loader.load(
   "bowling-pin.stl",
   (geometry) => {
-    const material = new THREE.MeshPhongMaterial({
-      color: 0xffffff,
-      specular: 0x111111,
-      shininess: 200,
-    });
-    const mesh = new THREE.Mesh(geometry, material);
-    const scale = 0.0033;
-    mesh.scale.set(scale, scale, scale);
-    mesh.translateOnAxis(new THREE.Vector3(0, 1, 1), 2);
-    scene.add(mesh);
+    const material = new THREE.MeshPhongMaterial({ color: 0xffffff });
+    const pinMesh = new THREE.Mesh(geometry, material);
+
+    // Create 10 instances of the bowling pin in a triangle formation
+    const numPinsInRow = [1, 2, 3, 4]; // Number of pins in each row of the triangle
+    const pinSpacingX = 1.1; // Spacing between pins along the X-axis
+    const pinSpacingZ = 1; // Spacing between rows along the Z-axis
+    const startX = -0.5 * pinSpacingX * (numPinsInRow[numPinsInRow.length - 1] - 1); // Starting X position
+    const startZ = 0; // Starting Z position
+
+    const pinScale = 0.0035; // Scale factor for the pins
+
+    for (let row = 0; row < numPinsInRow.length; row++) {
+        const xOffset = -0.5 * pinSpacingX * (numPinsInRow[row] - 1);
+        for (let col = 0; col < numPinsInRow[row]; col++) {
+            const pinInstance = pinMesh.clone();
+            pinInstance.scale.set(pinScale, pinScale, pinScale); // Scale down the pin
+            pinInstance.position.set(startX + xOffset + col * pinSpacingX, 0, startZ - row * pinSpacingZ);
+            scene.add(pinInstance);
+        }
+    }
   },
   undefined,
   (err) => console.error(err)

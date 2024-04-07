@@ -23,9 +23,9 @@ var directionalLight = new THREE.DirectionalLight(0xffffff);
 directionalLight.position.set(1, 1, 1).normalize();
 scene.add(directionalLight);
 
-camera.position.x = -5;
-camera.position.y = 10;
-camera.position.z = 10;
+camera.position.x = 7;
+camera.position.y = 45;
+camera.position.z = 60;
 
 const loader = new STLLoader();
 
@@ -38,7 +38,10 @@ loader.load(
       shininess: 200,
     });
     const mesh = new THREE.Mesh(geometry, material);
-    const scale = 0.0009;
+    const scale = 0.004;
+    mesh.position.x = 10.3;
+    mesh.position.y = 3.5;
+    mesh.position.z = 14;
     mesh.scale.set(scale, scale, scale);
     mesh.translateOnAxis(new THREE.Vector3(0, 1, 0), 2);
     scene.add(mesh);
@@ -55,19 +58,20 @@ loader.load(
 
     // Create 10 instances of the bowling pin in a triangle formation
     const numPinsInRow = [1, 2, 3, 4]; // Number of pins in each row of the triangle
-    const pinSpacingX = 1.1; // Spacing between pins along the X-axis
-    const pinSpacingZ = 1; // Spacing between rows along the Z-axis
-    const startX = -0.5 * pinSpacingX * (numPinsInRow[numPinsInRow.length - 1] - 1); // Starting X position
-    const startZ = 0; // Starting Z position
+    const pinSpacingX = 6; // Spacing between pins along the X-axis
+    const pinSpacingZ = 5; // Spacing between rows along the Z-axis
+    const startX = 0.7 * pinSpacingX * (numPinsInRow[numPinsInRow.length - 1] - 1); // Starting X position
+    const startZ = -180; // Starting Z position
+    const yVal = 4.8; // Y position of the pins
 
-    const pinScale = 0.0035; // Scale factor for the pins
+    const pinScale = 0.02; // Scale factor for the pins
 
     for (let row = 0; row < numPinsInRow.length; row++) {
         const xOffset = -0.5 * pinSpacingX * (numPinsInRow[row] - 1);
         for (let col = 0; col < numPinsInRow[row]; col++) {
             const pinInstance = pinMesh.clone();
             pinInstance.scale.set(pinScale, pinScale, pinScale); // Scale down the pin
-            pinInstance.position.set(startX + xOffset + col * pinSpacingX, 0, startZ - row * pinSpacingZ);
+            pinInstance.position.set(startX + xOffset + col * pinSpacingX, yVal, startZ - row * pinSpacingZ);
             scene.add(pinInstance);
         }
     }
@@ -82,16 +86,16 @@ loader.load(
     const material = new THREE.MeshPhongMaterial({
       color: 0xcd7f32,
       specular: 0x111111,
-      shininess: 200,
+      shininess: -100,
     });
     const mesh = new THREE.Mesh(geometry, material);
-    const scale = 0.001;
+    const scale = 0.01;
     mesh.scale.set(scale, scale, scale + 0.001);
 
     // Rotate the lane mesh
     mesh.rotation.y = Math.PI / 2; // Rotate 90 degrees clockwise around the y-axis
 
-    mesh.position.x = -4.5;
+    mesh.position.x = -4.9;
     mesh.position.y = -0.48;
     mesh.position.z = 19.5;
 

@@ -33,8 +33,8 @@ class MainScene {
     this.initThree();
     this.initPhysics();
 
-    new BowlingBall(10.3, 3.5, 14, (object) => {
-      this.add(object);
+    new BowlingBall(0, 50, 0, (object) => {
+      this.addObject(object);
     });
 
     // Create 10 instances of the bowling pin in a triangle formation
@@ -42,9 +42,9 @@ class MainScene {
     const pinSpacingX = 6; // Spacing between pins along the X-axis
     const pinSpacingZ = 5; // Spacing between rows along the Z-axis
     const startX =
-      0.7 * pinSpacingX * (numPinsInRow[numPinsInRow.length - 1] - 1); // Starting X position
-    const startZ = -180; // Starting Z position
-    const yVal = 4.8; // Y position of the pins
+      0 * pinSpacingX * (numPinsInRow[numPinsInRow.length - 1] - 1); // Starting X position
+    const startZ = 0; // Starting Z position
+    const yVal = 5; // Y position of the pins
 
     for (let row = 0; row < numPinsInRow.length; row++) {
       const xOffset = -0.5 * pinSpacingX * (numPinsInRow[row] - 1);
@@ -53,14 +53,14 @@ class MainScene {
           startX + xOffset + col * pinSpacingX,
           yVal,
           startZ - row * pinSpacingZ,
-          (object) => this.add(object)
+          (object) => this.addObject(object)
         );
       }
     }
 
-    new BowlingLane(-4.9, -0.48, 19.5, (object) => {
-      object.mesh.rotation.y = Math.PI / 2;
-      this.add(object);
+    new BowlingLane(0, -0.48, 0, (object) => {
+      object.mesh.rotation.z = Math.PI / 2;
+      this.addObject(object);
     });
   }
 
@@ -97,7 +97,7 @@ class MainScene {
     this.world.setGravity(new Ammo.btVector3(0, -9.8, 0));
   }
 
-  add(object) {
+  addObject(object) {
     this.scene.add(object.mesh);
     this.world.addRigidBody(object.body);
     this.objects.push(object);

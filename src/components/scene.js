@@ -7,8 +7,9 @@ import { BowlingPins } from "./pin";
 import { BowlingLane } from "./lane";
 
 class MainScene {
-  constructor() {
+  constructor(debug = false) {
     // threejs
+    this.clock = new THREE.Clock();
     this.scene = new THREE.Scene();
     this.renderer = new THREE.WebGLRenderer();
     this.stats = new Stats();
@@ -105,7 +106,8 @@ class MainScene {
   animate() {
     requestAnimationFrame(() => this.animate());
 
-    this.world.stepSimulation(1 / 60, 10);
+    const deltaTime = this.clock.getDelta();
+    this.world.stepSimulation(deltaTime, 10);
 
     this.objects.forEach((object) => {
       const transform = object.body.getWorldTransform();

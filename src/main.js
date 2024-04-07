@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { STLLoader } from "three/examples/jsm/loaders/STLLoader";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import Stats from "three/examples/jsm/libs/stats.module.js";
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xadd8e6);
@@ -10,6 +11,9 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   1000
 );
+
+let stats = new Stats();
+document.body.appendChild(stats.dom);
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -111,6 +115,8 @@ function animate() {
   controls.update();
 
   renderer.render(scene, camera);
+
+  stats.update();
 }
 
 animate();

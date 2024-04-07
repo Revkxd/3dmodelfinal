@@ -35,7 +35,7 @@ class BowlingLane {
 
         // create static body
         const shape = new Ammo.btBoxShape(
-          new Ammo.btVector3(size.x, 1.25, size.z)
+          new Ammo.btVector3(size.x, 1.25, size.z / 3 + size.z / 3)
         ); // Adjust size as needed
         const transform = new Ammo.btTransform();
         transform.setIdentity();

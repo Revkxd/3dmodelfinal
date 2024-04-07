@@ -45,19 +45,20 @@ class MainScene {
     // Create 10 instances of the bowling pin in a triangle formation
     const numPinsInRow = [1, 2, 3, 4]; // Number of pins in each row of the triangle
     const pinSpacingX = 6; // Spacing between pins along the X-axis
-    const pinSpacingZ = 5; // Spacing between rows along the Z-axis
+    const pinSpacingZ = 6; // Spacing between rows along the Z-axis
     const startX =
-      10 * pinSpacingX * (numPinsInRow[numPinsInRow.length - 1] - 1); // Starting X position
-    const startZ = 0; // Starting Z position
+      11 * pinSpacingX * (numPinsInRow[numPinsInRow.length - 1] - 1); // Starting X position
+    const startZ = 1; // Starting Z position
     const yVal = 5; // Y position of the pins
 
     for (let row = 0; row < numPinsInRow.length; row++) {
       const xOffset = -0.5 * pinSpacingX * (numPinsInRow[row] - 1);
+      const zOffset = -0.5 * pinSpacingZ * row;
       for (let col = 0; col < numPinsInRow[row]; col++) {
         new BowlingPins(
-          startX + xOffset + col * pinSpacingX,
+          startX + xOffset + row * pinSpacingX,
           yVal,
-          startZ - row * pinSpacingZ,
+          startZ + zOffset + col * pinSpacingZ,
           (object) => this.addObject(object)
         );
       }

@@ -66,7 +66,7 @@ class MainScene {
       ];
 
       lightPos.forEach((pos) => {
-        const light = new THREE.PointLight(0xffffff);
+        const light = new THREE.PointLight(0xffffbf);
         light.position.set(pos[0], pos[1], pos[2]);
         light.intensity = intensity;
         this.scene.add(light);

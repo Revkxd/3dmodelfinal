@@ -31,6 +31,7 @@ class MainScene {
     // game
     this.ball = null;
     this.pins = [];
+    this.pinsPos = [];
   }
 
   init() {
@@ -76,7 +77,7 @@ class MainScene {
     const pinSpacingX = 6; // Spacing between pins along the X-axis
     const pinSpacingZ = 6; // Spacing between rows along the Z-axis
     const startX =
-      11 * pinSpacingX * (numPinsInRow[numPinsInRow.length - 1] - 1); // Starting X position
+      11.25 * pinSpacingX * (numPinsInRow[numPinsInRow.length - 1] - 1); // Starting X position
     const startZ = 1; // Starting Z position
     const yVal = 5; // Y position of the pins
 
@@ -84,22 +85,26 @@ class MainScene {
       const xOffset = -0.5 * pinSpacingX * (numPinsInRow[row] - 1);
       const zOffset = -0.5 * pinSpacingZ * row;
       for (let col = 0; col < numPinsInRow[row]; col++) {
-        new BowlingPins(
+        this.pinsPos.push([
           startX + xOffset + row * pinSpacingX,
           yVal,
           startZ + zOffset + col * pinSpacingZ,
-          (object) => this.addObject(object)
+        ]);
+        this.pins.push(
+          new BowlingPins(
+            startX + xOffset + row * pinSpacingX,
+            yVal,
+            startZ + zOffset + col * pinSpacingZ,
+            (object) => this.addObject(object)
+          )
         );
       }
     }
 
-    new BowlingBall(0, 0, 0, (object) => {
+    this.ball = new BowlingBall(0, 0, 0, (object) => {
       this.addObject(object);
-      object.setPos(0, 5, 0);
-      const impulseVec = new Ammo.btVector3(110, 1, 0);
-      const centerOfMass = new Ammo.btVector3();
-      object.body.getCenterOfMassTransform().getOrigin(centerOfMass);
-      object.body.applyImpulse(impulseVec, centerOfMass);
+      object.setPos(0, 7, 0);
+      object.launch(110, 0, 0);
     });
   }
 
@@ -138,8 +143,32 @@ class MainScene {
     this.objects.push(object);
   }
 
+  reset() {
+    const rand = (min, max) => Math.floor(Math.random() * (max - min) + min);
+
+    const force = rand(100, 150);
+    const zPos = rand(-12, 12);
+    this.ball.removeForces();
+    this.ball.setPos(0, 7, zPos);
+    this.ball.launch(force, 0, 0);
+
+    this.pins.forEach((pin, idx) => {
+      const pos = this.pinsPos[idx];
+      pin.removeForces();
+      pin.setPos(pos[0], pos[1], pos[2]);
+    });
+  }
+
   animate() {
     requestAnimationFrame(() => this.animate());
+
+    if (
+      this.ball.mesh.position.x >= 220.0 ||
+      this.ball.mesh.position.z >= 20.0 ||
+      this.ball.mesh.position.z <= -20.0
+    ) {
+      this.reset();
+    }
 
     const deltaTime = this.clock.getDelta();
     this.world.stepSimulation(deltaTime, 10);

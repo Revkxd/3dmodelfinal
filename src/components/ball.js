@@ -70,6 +70,18 @@ class BowlingBall {
     newTransform.setOrigin(newPos);
     this.body.setCenterOfMassTransform(newTransform);
   }
+
+  launch(x, y, z) {
+    const impulseVec = new Ammo.btVector3(x, y, z);
+    const centerOfMass = new Ammo.btVector3();
+    this.body.getCenterOfMassTransform().getOrigin(centerOfMass);
+    this.body.applyImpulse(impulseVec, centerOfMass);
+  }
+
+  removeForces() {
+    this.body.setAngularVelocity(new Ammo.btVector3(0, 0, 0));
+    this.body.setLinearVelocity(new Ammo.btVector3(0, 0, 0));
+  }
 }
 
 export { BowlingBall };

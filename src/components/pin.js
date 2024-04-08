@@ -62,10 +62,17 @@ class BowlingPins {
   }
 
   setPos(x, y, z) {
+    this.mesh.position.set(x, y, z);
+    const newPos = new Ammo.btVector3(x, y, z);
     const newTransform = new Ammo.btTransform();
     newTransform.setIdentity();
     newTransform.setOrigin(newPos);
     this.body.setCenterOfMassTransform(newTransform);
+  }
+
+  removeForces() {
+    this.body.setAngularVelocity(new Ammo.btVector3(0, 0, 0));
+    this.body.setLinearVelocity(new Ammo.btVector3(0, 0, 0));
   }
 }
 

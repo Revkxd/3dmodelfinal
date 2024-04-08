@@ -16,7 +16,7 @@ class BowlingLane {
         const material = new THREE.MeshPhongMaterial({
           color: 0xced2d7,
           specular: 0x111111,
-          shininess: -100,
+          shininess: 2000,
         });
         const mesh = new THREE.Mesh(geometry, material);
 

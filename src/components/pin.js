@@ -13,7 +13,10 @@ class BowlingPins {
     loader.load(
       "bowling-pin.stl",
       (geometry) => {
-        const material = new THREE.MeshPhongMaterial({ color: 0xffffff });
+        const material = new THREE.MeshPhongMaterial({
+          color: 0xffffff,
+          shininess: 200,
+        });
         const mesh = new THREE.Mesh(geometry, material);
         const scale = 0.02;
         mesh.position.x = x;

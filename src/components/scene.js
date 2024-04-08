@@ -146,7 +146,7 @@ class MainScene {
   reset() {
     const rand = (min, max) => Math.floor(Math.random() * (max - min) + min);
 
-    const force = rand(100, 150);
+    const force = rand(80, 150);
     const zPos = rand(-12, 12);
     this.ball.removeForces();
     this.ball.setPos(0, 7, zPos);
@@ -164,8 +164,10 @@ class MainScene {
 
     if (
       this.ball.mesh.position.x >= 220.0 ||
-      this.ball.mesh.position.z >= 20.0 ||
-      this.ball.mesh.position.z <= -20.0
+      this.ball.mesh.position.z >= 40.0 ||
+      this.ball.mesh.position.z <= -40.0 ||
+      this.ball.mesh.position.z <= -10.0 ||
+      this.ball.body.getLinearVelocity().length() <= 2.5
     ) {
       this.reset();
     }

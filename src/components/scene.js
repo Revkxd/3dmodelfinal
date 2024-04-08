@@ -27,6 +27,10 @@ class MainScene {
     // ammojs
     this.world = null;
     this.objects = [];
+
+    // game
+    this.ball = null;
+    this.pins = [];
   }
 
   init() {
@@ -40,6 +44,31 @@ class MainScene {
     new BowlingLane(0, 0, 0, (object) => {
       this.addObject(object);
       object.setPos(0, 0, -object.bounds.z / 2);
+
+      const intensity = 100;
+      const lightPos = [
+        [object.bounds.x - 35, object.bounds.y - 5, -object.bounds.z / 2 + 5],
+        [object.bounds.x - 35, object.bounds.y - 5, object.bounds.z / 2 - 5],
+        [object.bounds.x - 35, object.bounds.y - 45, -object.bounds.z / 2 + 5],
+        [object.bounds.x - 35, object.bounds.y - 45, object.bounds.z / 2 - 5],
+        [
+          object.bounds.x - 35,
+          object.bounds.y - 5,
+          object.bounds.z / 4 - object.bounds.z / 4,
+        ],
+        [
+          object.bounds.x - 35,
+          object.bounds.y - 45,
+          object.bounds.z / 4 - object.bounds.z / 4,
+        ],
+      ];
+
+      lightPos.forEach((pos) => {
+        const light = new THREE.PointLight(0xffffff);
+        light.position.set(pos[0], pos[1], pos[2]);
+        light.intensity = intensity;
+        this.scene.add(light);
+      });
     });
 
     // Create 10 instances of the bowling pin in a triangle formation

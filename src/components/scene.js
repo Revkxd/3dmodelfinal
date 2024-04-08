@@ -32,6 +32,7 @@ class MainScene {
     this.ball = null;
     this.pins = [];
     this.pinsPos = [];
+    this.elapsed = 0;
   }
 
   init() {
@@ -46,7 +47,7 @@ class MainScene {
       this.addObject(object);
       object.setPos(0, 0, -object.bounds.z / 2);
 
-      const intensity = 100;
+      const intensity = 300;
       const lightPos = [
         [object.bounds.x - 35, object.bounds.y - 5, -object.bounds.z / 2 + 5],
         [object.bounds.x - 35, object.bounds.y - 5, object.bounds.z / 2 - 5],
@@ -157,22 +158,25 @@ class MainScene {
       pin.removeForces();
       pin.setPos(pos[0], pos[1], pos[2]);
     });
+
+    this.elapsed = 0;
   }
 
   animate() {
     requestAnimationFrame(() => this.animate());
 
     if (
-      this.ball.mesh.position.x >= 220.0 ||
-      this.ball.mesh.position.z >= 40.0 ||
-      this.ball.mesh.position.z <= -40.0 ||
-      this.ball.mesh.position.z <= -10.0 ||
-      this.ball.body.getLinearVelocity().length() <= 2.5
+      this.ball.mesh.position.x >= 250.0 ||
+      this.ball.mesh.position.z >= 50.0 ||
+      this.ball.mesh.position.z <= -50.0 ||
+      this.ball.mesh.position.y <= -5.0 ||
+      this.elapsed >= 5.0
     ) {
       this.reset();
     }
 
     const deltaTime = this.clock.getDelta();
+    this.elapsed += deltaTime;
     this.world.stepSimulation(deltaTime, 10);
 
     this.objects.forEach((object) => {
